@@ -11,7 +11,13 @@ phases:
 
   pre_build:
     commands:
-      - echo Running Flyway migration...
+      - echo "Flyway version:"
+      - flyway -v
+      - echo "Current directory:"
+      - pwd
+      - echo "List sql files:"
+      - ls -R sql
+      - echo "Running migration..."
       - flyway -configFiles=flyway.conf migrate
 
   build:
