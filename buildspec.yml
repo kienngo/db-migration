@@ -19,7 +19,7 @@ phases:
       - DB_PORT=$(aws ssm get-parameter --name "/Prd/online/spring.datasource.port" --query "Parameter.Value" --output text)
       - DB_SCHEMA=$(aws ssm get-parameter --name "/Prd/online/spring.datasource.schema" --query "Parameter.Value" --output text)
       - DB_USER=$(aws ssm get-parameter --name "/Prd/online/spring.datasource.username" --query "Parameter.Value" --output text)
-      - DB_PASSWORD=$(aws ssm get-parameter --name "/Prd/online/spring.datasource.password" --query "Parameter.Value" --output text)
+      - DB_PASSWORD=$(aws ssm get-parameter --name "/Prd/online/spring.datasource.password" --with-decryption --query "Parameter.Value" --output text)
 
       # Compose JDBC URL
       - FLYWAY_URL="jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_SCHEMA}"
