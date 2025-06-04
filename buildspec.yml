@@ -28,6 +28,8 @@ phases:
       - echo "flyway.url=$FLYWAY_URL" > flyway.conf
       - echo "flyway.user=$DB_USER" >> flyway.conf
       - echo "flyway.password=$DB_PASSWORD" >> flyway.conf
+      - echo "flyway.locations=filesystem:sql" >> flyway.conf
+      - echo "flyway.baselineOnMigrate=true" >> flyway.conf
 
       - echo "Running Flyway migration..."
       - flyway -configFiles=flyway.conf migrate
