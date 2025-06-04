@@ -14,13 +14,22 @@ phases:
 
   pre_build:
     commands:
-      - echo "Flyway version:"
-      - flyway -v
-      - echo "Current directory:"
-      - pwd
-      - echo "List sql files:"
-      - ls -R sql
-      - echo "Running migration..."
+      - echo "Fetching parameters..."
+      - DB_HOST=$(aws ssm get-parameter --name "/Prd/online/spring.datasource.endpoint" --query "Parameter.Value" --output text)
+      - DB_PORT=$(aws ssm get-parameter --name "/Prd/online/spring.datasource.port" --query "Parameter.Value" --output text)
+      - DB_SCHEMA=$(aws ssm get-parameter --name "/Prd/online/spring.datasource.schema" --query "Parameter.Value" --output text)
+      - DB_USER=$(aws ssm get-parameter --name "/Prd/online/spring.datasource.username" --query "Parameter.Value" --output text)
+      - DB_PASSWORD=$(aws ssm get-parameter --name "/Prd/online/spring.datasource.password" --query "Parameter.Value" --output text)
+
+      # Compose JDBC URL
+      - FLYWAY_URL="jdbc:postgresql://${DB_HOST}:${DB_PORT}/${DB_SCHEMA}"
+
+      - echo "Writing flyway.conf..."
+      - echo "flyway.url=$FLYWAY_URL" > flyway.conf
+      - echo "flyway.user=$DB_USER" >> flyway.conf
+      - echo "flyway.password=$DB_PASSWORD" >> flyway.conf
+
+      - echo "Running Flyway migration..."
       - flyway -configFiles=flyway.conf migrate
 
   build:
