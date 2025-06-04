@@ -1,0 +1,23 @@
+version: 0.2
+
+phases:
+  install:
+    runtime-versions:
+      java: corretto21
+    commands:
+      - echo Installing Flyway CLI...
+      - curl -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/10.11.0/flyway-commandline-10.11.0-linux-x64.tar.gz | tar xz
+      - mv flyway-*/flyway /usr/local/bin/flyway
+
+  pre_build:
+    commands:
+      - echo Running Flyway migration...
+      - flyway -configFiles=flyway.conf migrate
+
+  build:
+    commands:
+      - echo "No build needed – migration only"
+
+artifacts:
+  files:
+    - '**/*'
