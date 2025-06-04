@@ -9,7 +9,6 @@ phases:
       - curl -L https://repo1.maven.org/maven2/org/flywaydb/flyway-commandline/10.11.0/flyway-commandline-10.11.0-linux-x64.tar.gz | tar xz
       - mv flyway-*/flyway /usr/local/bin/flyway
       - chmod +x /usr/local/bin/flyway
-      - echo "Flyway installed at: $(which flyway)"
       - echo "Flyway CLI installed successfully"
 
   pre_build:
